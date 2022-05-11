@@ -3,15 +3,18 @@
 	const questsPromise = fetch('/quests');
 	let quests = null;
 
+	const shortInput = document.querySelector('form#pob input[name="short"]');
 	document.querySelector('form#pob').addEventListener('submit', async (event) => {
 		event.preventDefault();
-		const short = document.querySelector('form#pob input[name="short"]').value;
+		const short = shortInput.value;
 		load(short);
 		history.pushState({}, '', '/pob/' + short);
 	});
 
 	if (window.location.pathname.substr(0, 5) === '/pob/') {
-		load(window.location.pathname.substr(5));
+		const short = window.location.pathname.substr(5);
+		shortInput.value = short;
+		load(short);
 	}
 
 	async function load(short) {
