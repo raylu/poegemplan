@@ -34,7 +34,11 @@ def pob(request, short):
 
 	build_gems = []
 	for skill in root.find('Skills').iter('Skill'):
+		if skill.get('enabled') == 'false' or skill.get('source'):
+			continue
 		for gem in skill.iter('Gem'):
+			if gem.get('enabled') == 'false':
+				continue
 			name = gem.get('nameSpec')
 			if gem.get('skillId').startswith('Support'):
 				name += ' Support'
