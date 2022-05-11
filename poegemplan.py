@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import base64
+import mimetypes
 import json
 import sys
 import xml.etree.ElementTree
@@ -13,9 +14,10 @@ def root(request, short=None):
 	with open('index.html', 'r') as f:
 		return Response(f.read(), content_type='text/html; charset=UTF-8')
 
-def script(request):
-	with open('script.js', 'r') as f:
-		return Response(f.read(), content_type='text/javascript')
+def static(request, path):
+	content_type, _ = mimetypes.guess_type(path)
+	with open(path, 'r') as f:
+		return Response(f.read(), content_type=content_type)
 
 def style(request):
 	with open('style.css', 'r') as f:
@@ -56,8 +58,7 @@ def pob(request, short):
 routes = [
 	('GET', '/', root),
 	('GET', '/pob/<short>', root),
-	('GET', '/script.js', script),
-	('GET', '/style.css', style),
+	('GET', '/static/<path:path>', static),
 	('GET', '/quests', quests),
 	('GET', '/pob/raw/<short>', pob),
 ]
