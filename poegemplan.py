@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 
+import sys
+if len(sys.argv) == 2:
+	import eventlet
+	import eventlet.wsgi
+	eventlet.monkey_patch()
+
 import base64
 import mimetypes
 import json
-import sys
 import xml.etree.ElementTree
 import zlib
 
@@ -85,7 +90,8 @@ quests = [
 if __name__ == '__main__':
 	with open('gems.json', 'r') as f:
 		gems = json.load(f)
-	port = 8000
 	if len(sys.argv) == 2:
 		port = int(sys.argv[1])
-	app.main(port=port)
+		eventlet.wsgi.server(eventlet.listen(('127.0.0.1', port)), app)
+	else:
+		app.main()
