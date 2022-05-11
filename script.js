@@ -37,12 +37,15 @@
 		for (const gem of build['gems']) {
 			for (const quest of gem['quests']) {
 				if (quest['classes'] === 'All' || quest['classes'].indexOf(build['class']) !== -1) {
-					const div = document.createElement('div');
+					const gemDiv = document.createElement('div');
+					gemDiv.classList.add('gem');
 					const img = document.createElement('img');
 					img.src = 'https://web.poecdn.com/gen/image/' + gem['src'];
-					div.appendChild(img);
-					div.innerHTML += gem['name'];
-					main.querySelector('#' + quest['name']).appendChild(div);
+					const name = document.createElement('div');
+					name.innerText = gem['name'];
+					gemDiv.appendChild(img);
+					gemDiv.appendChild(name);
+					main.querySelector('#' + quest['name']).appendChild(gemDiv);
 					break;
 				}
 			}

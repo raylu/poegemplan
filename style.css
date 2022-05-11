@@ -33,11 +33,15 @@ main section {
 	width: 250px;
 }
 
-main section div {
-	margin-top: 0.25em;
-}
-
 main section div.quest_name {
 	font-weight: bold;
-	margin-top: 0;
+}
+
+main section div.gem {
+	display: flex;
+}
+
+main section div.gem img {
+	height: 24px;
+	margin-right: 5px;
 }
