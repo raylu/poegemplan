@@ -10,11 +10,14 @@ from pigwig import PigWig, Response
 
 def root(request):
 	with open('index.html', 'r') as f:
-		return Response(f.read(), content_type='text/html')
+		return Response(f.read(), content_type='text/html; charset=UTF-8')
 
 def script(request):
 	with open('script.js', 'r') as f:
 		return Response(f.read(), content_type='text/javascript')
+
+def quests(request):
+	return Response.json(quests)
 
 def pob(request, short):
 	res = httpx.get('https://poe.ninja/pob/raw/' + short)
@@ -42,6 +45,7 @@ def pob(request, short):
 routes = [
 	('GET', '/', root),
 	('GET', '/script.js', script),
+	('GET', '/quests', quests),
 	('GET', '/pob/<short>', pob),
 ]
 
