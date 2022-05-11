@@ -6,6 +6,7 @@ if len(sys.argv) == 2:
 	import eventlet.wsgi
 	eventlet.monkey_patch()
 
+# pylint: disable=wrong-import-position
 import base64
 import mimetypes
 import json
@@ -35,12 +36,12 @@ def pob(request, short):
 	res = httpx.get('https://poe.ninja/pob/raw/' + short)
 	res.raise_for_status()
 	pob_xml = zlib.decompress(base64.urlsafe_b64decode(res.text))
-	root = xml.etree.ElementTree.fromstring(pob_xml)
+	xml_root = xml.etree.ElementTree.fromstring(pob_xml)
 
-	class_name = root.find('Build').get('className')
+	class_name = xml_root.find('Build').get('className')
 
 	build_gems = []
-	for skill in root.find('Skills').iter('Skill'):
+	for skill in xml_root.find('Skills').iter('Skill'):
 		if skill.get('enabled') == 'false' or skill.get('source'):
 			continue
 		for gem in skill.iter('Gem'):
@@ -69,7 +70,7 @@ routes = [
 ]
 
 app = PigWig(routes)
-
+gems = None
 quests = [
 	'enemy_at_the_gate',
 	'mercy_mission',
@@ -87,7 +88,8 @@ quests = [
 	'the_twilight_strand',
 ]
 
-if __name__ == '__main__':
+def main():
+	global gems
 	with open('gems.json', 'r') as f:
 		gems = json.load(f)
 	if len(sys.argv) == 2:
@@ -95,3 +97,6 @@ if __name__ == '__main__':
 		eventlet.wsgi.server(eventlet.listen(('127.0.0.1', port)), app)
 	else:
 		app.main()
+
+if __name__ == '__main__':
+	main()
