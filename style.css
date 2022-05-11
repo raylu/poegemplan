@@ -30,4 +30,14 @@ main section {
 	margin: 10px;
 	padding: 5px;
 	border: 1px solid #222;
+	width: 250px;
+}
+
+main section div {
+	margin-top: 0.25em;
+}
+
+main section div.quest_name {
+	font-weight: bold;
+	margin-top: 0;
 }

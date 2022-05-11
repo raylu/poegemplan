@@ -27,7 +27,10 @@
 		for (const quest of quests) {
 			const section = document.createElement('section');
 			section.id = quest;
-			section.innerText = quest;
+			const div = document.createElement('div');
+			div.classList.add('quest_name');
+			div.innerText = formatQuest(quest);
+			section.appendChild(div);
 			main.appendChild(section);
 		}
 
@@ -41,5 +44,18 @@
 				}
 			}
 		}
+	}
+
+	function formatQuest(quest) {
+		quest = quest.replaceAll('_s_', "'s ");
+		quest = quest.replaceAll('_', ' ');
+		const split = quest.split(' ');
+		const first = split[0].charAt(0).toUpperCase() + split[0].substr(1);
+		const rest = split.splice(1).map(function(word) {
+			if (['and', 'at', 'in', 'of', 'the'].indexOf(word) !== -1)
+				return word;
+			return (word.charAt(0).toUpperCase() + word.substr(1));
+		}).join(' ');
+		return `${first} ${rest}`;
 	}
 })();
