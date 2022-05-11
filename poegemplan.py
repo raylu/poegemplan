@@ -66,18 +66,18 @@ app = PigWig(routes)
 
 quests = [
 	'enemy_at_the_gate',
+	'mercy_mission',
+	'breaking_some_eggs',
 	'the_caged_brute',
 	'the_siren_s_cadence',
-	'breaking_some_eggs',
-	'mercy_mission',
-	'sharp_and_cruel',
 	'intruders_in_black',
+	'sharp_and_cruel',
 	'the_root_of_the_problem',
 	'lost_in_love',
 	'sever_the_right_hand',
 	'a_fixture_of_fate',
-	'the_eternal_nightmare',
 	'breaking_the_seal',
+	'the_eternal_nightmare',
 	'the_twilight_strand',
 ]
 
