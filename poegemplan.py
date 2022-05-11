@@ -16,7 +16,7 @@ def root(request, short=None):
 
 def static(request, path):
 	content_type, _ = mimetypes.guess_type(path)
-	with open(path, 'r') as f:
+	with open('static/' + path, 'r') as f:
 		return Response(f.read(), content_type=content_type)
 
 def style(request):
