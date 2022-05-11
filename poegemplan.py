@@ -16,6 +16,10 @@ def script(request):
 	with open('script.js', 'r') as f:
 		return Response(f.read(), content_type='text/javascript')
 
+def style(request):
+	with open('style.css', 'r') as f:
+		return Response(f.read(), content_type='text/css')
+
 def quests(request):
 	return Response.json(quests)
 
@@ -46,6 +50,7 @@ routes = [
 	('GET', '/', root),
 	('GET', '/pob/<short>', root),
 	('GET', '/script.js', script),
+	('GET', '/style.css', style),
 	('GET', '/quests', quests),
 	('GET', '/pob/raw/<short>', pob),
 ]

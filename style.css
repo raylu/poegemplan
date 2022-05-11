@@ -1,0 +1,33 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #000;
+	color: #aaa;
+	font: 18px sans-serif;
+}
+
+a:link, a:visited, a:active {
+	color: #58a;
+	text-decoration: none;
+}
+a:hover {
+	color: #5ad;
+}
+
+main {
+	width: 960px;
+	margin: 10px auto 100px;
+	padding: 25px 50px;
+	background-color: #111;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+
+main section {
+	margin: 10px;
+	padding: 5px;
+	border: 1px solid #222;
+}
