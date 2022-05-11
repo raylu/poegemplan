@@ -1,10 +1,9 @@
 'use strict';
 (() => {
-	const questsPromise = fetch('/quests');
-	let quests = null;
+	const questsPromise = fetchQuests();
 
 	const shortInput = document.querySelector('form#pob input[name="short"]');
-	document.querySelector('form#pob').addEventListener('submit', async (event) => {
+	document.querySelector('form#pob').addEventListener('submit', (event) => {
 		event.preventDefault();
 		const short = shortInput.value;
 		load(short);
@@ -17,14 +16,16 @@
 		load(short);
 	}
 
+	async function fetchQuests() {
+		const res = await fetch('/quests');
+		return res.json();
+	}
+
 	async function load(short) {
 		const pobRes = await fetch('/pob/raw/' + short);
 		const build = await pobRes.json();
+		const quests = await questsPromise;
 
-		if (quests === null) {
-			const questsRes = await questsPromise;
-			quests = await questsRes.json();
-		}
 		const main = document.querySelector('main');
 		main.innerHTML = '';
 		for (const quest of quests) {
@@ -56,14 +57,12 @@
 	}
 
 	function formatQuest(quest) {
-		quest = quest.replaceAll('_s_', "'s ");
-		quest = quest.replaceAll('_', ' ');
-		const split = quest.split(' ');
+		const split = quest.replaceAll('_s_', '\'s_').split('_');
 		const first = split[0].charAt(0).toUpperCase() + split[0].substr(1);
-		const rest = split.splice(1).map(function(word) {
+		const rest = split.splice(1).map((word) => {
 			if (['and', 'at', 'in', 'of', 'the'].indexOf(word) !== -1)
 				return word;
-			return (word.charAt(0).toUpperCase() + word.substr(1));
+			return word.charAt(0).toUpperCase() + word.substr(1);
 		}).join(' ');
 		return `${first} ${rest}`;
 	}
