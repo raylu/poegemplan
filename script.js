@@ -38,7 +38,10 @@
 			for (const quest of gem['quests']) {
 				if (quest['classes'] === 'All' || quest['classes'].indexOf(build['class']) !== -1) {
 					const div = document.createElement('div');
-					div.innerText = gem['name'];
+					const img = document.createElement('img');
+					img.src = 'https://web.poecdn.com/gen/image/' + gem['src'];
+					div.appendChild(img);
+					div.innerHTML += gem['name'];
 					main.querySelector('#' + quest['name']).appendChild(div);
 					break;
 				}

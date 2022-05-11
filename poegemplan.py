@@ -38,12 +38,14 @@ def pob(request, short):
 			if gem.get('skillId').startswith('Support'):
 				name += ' Support'
 			try:
-				build_gems.append({
-					'name': name,
-					'quests': gems[name],
-				})
+				gem_data = gems[name]
 			except KeyError:
 				continue
+			build_gems.append({
+				'name': name,
+				'quests': gem_data['quests'],
+				'src': gem_data['src'],
+			})
 	return Response.json({'class': class_name, 'gems': build_gems})
 
 routes = [

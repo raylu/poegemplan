@@ -17,7 +17,7 @@ def main():
 				quest['classes'] = 'All'
 			else:
 				quest['classes'] = quest['classes'].split(', ')
-		gems[name] = quests
+		gems[name] = {'quests': quests, 'src': gem['src']}
 
 	with open('gems.json', 'w') as f:
 		json.dump(gems, f)
