@@ -17,17 +17,13 @@ import httpx
 from pigwig import PigWig, Response
 
 def root(request, short=None):
-	with open('index.html', 'r') as f:
+	with open('index.html', 'rb') as f:
 		return Response(f.read(), content_type='text/html; charset=UTF-8')
 
 def static(request, path):
 	content_type, _ = mimetypes.guess_type(path)
 	with open('static/' + path, 'rb') as f:
 		return Response(f.read(), content_type=content_type)
-
-def style(request):
-	with open('style.css', 'r') as f:
-		return Response(f.read(), content_type='text/css')
 
 def quests(request):
 	return Response.json(quests)
@@ -90,7 +86,7 @@ quests = [
 
 def main():
 	global gems
-	with open('gems.json', 'r') as f:
+	with open('gems.json', 'r', encoding='utf-8') as f:
 		gems = json.load(f)
 	if len(sys.argv) == 2:
 		port = int(sys.argv[1])

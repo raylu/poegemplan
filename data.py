@@ -19,7 +19,7 @@ def main():
 				quest['classes'] = quest['classes'].split(', ')
 		gems[name] = {'quests': quests, 'src': gem['src']}
 
-	with open('gems.json', 'w') as f:
+	with open('gems.json', 'w', encoding='utf-8') as f:
 		json.dump(gems, f)
 
 if __name__ == '__main__':
