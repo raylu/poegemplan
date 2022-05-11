@@ -43,6 +43,8 @@
 				if (quest['classes'] === 'All' || quest['classes'].indexOf(build['class']) !== -1) {
 					const gemDiv = document.createElement('div');
 					gemDiv.classList.add('gem');
+					if (!gem['enabled'])
+						gemDiv.classList.add('disabled');
 					const img = document.createElement('img');
 					img.src = 'https://web.poecdn.com/gen/image/' + gem['src'];
 					const name = document.createElement('div');

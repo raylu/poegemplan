@@ -38,11 +38,10 @@ def pob(request, short):
 
 	build_gems = []
 	for skill in xml_root.find('Skills').iter('Skill'):
-		if skill.get('enabled') == 'false' or skill.get('source'):
+		if skill.get('source'):
 			continue
+		enabled = skill.get('enabled') == 'true'
 		for gem in skill.iter('Gem'):
-			if gem.get('enabled') == 'false':
-				continue
 			name = gem.get('nameSpec')
 			if gem.get('skillId').startswith('Support'):
 				name += ' Support'
@@ -52,6 +51,7 @@ def pob(request, short):
 				continue
 			build_gems.append({
 				'name': name,
+				'enabled': enabled and gem.get('enabled') == 'true',
 				'quests': gem_data['quests'],
 				'src': gem_data['src'],
 			})

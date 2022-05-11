@@ -52,6 +52,9 @@ main section div.quest_name {
 main section div.gem {
 	display: flex;
 }
+main section div.gem.disabled {
+	opacity: 0.4;
+}
 
 main section div.gem img {
 	height: 24px;
