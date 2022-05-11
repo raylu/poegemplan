@@ -5,7 +5,17 @@
 
 	document.querySelector('form#pob').addEventListener('submit', async (event) => {
 		event.preventDefault();
-		const pobRes = await fetch('/pob/6HZ');
+		const short = document.querySelector('form#pob input[name="short"]').value;
+		load(short);
+		history.pushState({}, '', 'pob/' + short);
+	});
+
+	if (window.location.pathname.substr(0, 5) === '/pob/') {
+		load(window.location.pathname.substr(5));
+	}
+
+	async function load(short) {
+		const pobRes = await fetch('/pob/raw/' + short);
 		const code = await pobRes.json();
 		console.log(code);
 
@@ -20,5 +30,5 @@
 			section.innerText = quest;
 			main.appendChild(section);
 		}
-	});
+	}
 })();

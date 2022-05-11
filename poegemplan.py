@@ -8,7 +8,7 @@ import zlib
 import httpx
 from pigwig import PigWig, Response
 
-def root(request):
+def root(request, short=None):
 	with open('index.html', 'r') as f:
 		return Response(f.read(), content_type='text/html; charset=UTF-8')
 
@@ -44,9 +44,10 @@ def pob(request, short):
 
 routes = [
 	('GET', '/', root),
+	('GET', '/pob/<short>', root),
 	('GET', '/script.js', script),
 	('GET', '/quests', quests),
-	('GET', '/pob/<short>', pob),
+	('GET', '/pob/raw/<short>', pob),
 ]
 
 app = PigWig(routes)
