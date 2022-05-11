@@ -68,6 +68,7 @@ routes = [
 app = PigWig(routes)
 gems = None
 quests = [
+	'the_twilight_strand',
 	'enemy_at_the_gate',
 	'mercy_mission',
 	'breaking_some_eggs',
@@ -81,7 +82,6 @@ quests = [
 	'a_fixture_of_fate',
 	'breaking_the_seal',
 	'the_eternal_nightmare',
-	'the_twilight_strand',
 ]
 
 def main():
