@@ -60,3 +60,9 @@ main section div.gem img {
 	height: 24px;
 	margin-right: 5px;
 }
+
+footer {
+	text-align: center;
+	font-family: monospace;
+	font-size: 14px;
+}
