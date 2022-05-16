@@ -26,7 +26,7 @@ def static(request, path):
 		return Response(f.read(), content_type=content_type)
 
 def quests(request):
-	return Response.json(quests)
+	return Response.json(quest_names)
 
 def pob(request, short):
 	res = httpx.get('https://poe.ninja/pob/raw/' + short)
@@ -45,20 +45,20 @@ def pob(request, short):
 			name = gem.get('nameSpec')
 			try:
 				if gem.get('skillId').startswith('Vaal'):
-					quests = gems[name[len('Vaal '):]]['quests']
+					gem_quests = gems[name[len('Vaal '):]]['quests']
 					src = gems[name]['src']
 				else:
 					data_name = name
 					if gem.get('skillId').startswith('Support'):
 						data_name += ' Support'
-					quests = gems[data_name]['quests']
+					gem_quests = gems[data_name]['quests']
 					src = gems[data_name]['src']
 			except KeyError:
 				continue
 			build_gems.append({
 				'name': name,
 				'enabled': enabled and gem.get('enabled') == 'true',
-				'quests': quests,
+				'quests': gem_quests,
 				'src': src,
 			})
 	return Response.json({'class': class_name, 'gems': build_gems})
@@ -73,7 +73,7 @@ routes = [
 
 app = PigWig(routes)
 gems = None
-quests = [
+quest_names = [
 	'the_twilight_strand',
 	'enemy_at_the_gate',
 	'mercy_mission',
