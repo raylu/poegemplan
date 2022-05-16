@@ -43,17 +43,23 @@ def pob(request, short):
 		enabled = skill.get('enabled') == 'true'
 		for gem in skill.iter('Gem'):
 			name = gem.get('nameSpec')
-			if gem.get('skillId').startswith('Support'):
-				name += ' Support'
 			try:
-				gem_data = gems[name]
+				if gem.get('skillId').startswith('Vaal'):
+					quests = gems[name[len('Vaal '):]]['quests']
+					src = gems[name]['src']
+				else:
+					data_name = name
+					if gem.get('skillId').startswith('Support'):
+						data_name += ' Support'
+					quests = gems[data_name]['quests']
+					src = gems[data_name]['src']
 			except KeyError:
 				continue
 			build_gems.append({
 				'name': name,
 				'enabled': enabled and gem.get('enabled') == 'true',
-				'quests': gem_data['quests'],
-				'src': gem_data['src'],
+				'quests': quests,
+				'src': src,
 			})
 	return Response.json({'class': class_name, 'gems': build_gems})
 
