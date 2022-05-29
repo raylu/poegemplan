@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-if len(sys.argv) == 2:
+if len(sys.argv) == 3:
 	import eventlet
 	import eventlet.wsgi
 	eventlet.monkey_patch()
@@ -94,9 +94,10 @@ def main():
 	global gems
 	with open('gems.json', 'r', encoding='utf-8') as f:
 		gems = json.load(f)
-	if len(sys.argv) == 2:
-		port = int(sys.argv[1])
-		eventlet.wsgi.server(eventlet.listen(('127.0.0.1', port)), app)
+	if len(sys.argv) == 3:
+		addr = sys.argv[1]
+		port = int(sys.argv[2])
+		eventlet.wsgi.server(eventlet.listen((addr, port)), app)
 	else:
 		app.main()
 
