@@ -27,11 +27,11 @@ def analyze(account, character):
 	stats = Stats(flat_life=38 + character['character']['level'] * 12,
 		increased_life=0,
 		strength=20)
+
 	for item in character['items']:
-		for modlist in ['implicitMods', 'explicitMods', 'craftedMods']:
-			if modlist not in item:
-				continue
-			_parse_mods(stats, item[modlist])
+		_parse_item(stats, item)
+	for item in skills['items']: # jewels
+		_parse_item(stats, item)
 
 	for h in skills['hashes']:
 		node = tree['nodes'][str(h)]
@@ -74,6 +74,12 @@ matchers = [(re.compile(pattern), attr) for pattern, attr in [
 	(r'(\d+)% increased maximum Life', 'increased_life'),
 	(r'\+(\d+) to (Strength.*|all Attributes)', 'strength'),
 ]]
+
+def _parse_item(stats: Stats, item: dict):
+	for modlist in ['implicitMods', 'explicitMods', 'craftedMods']:
+		if modlist not in item:
+			continue
+		_parse_mods(stats, item[modlist])
 
 def _parse_mods(stats: Stats, mods: list) -> None:
 	for mod in mods:
