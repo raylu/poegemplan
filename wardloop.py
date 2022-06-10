@@ -22,7 +22,7 @@ def analyze(account, character):
 	r.raise_for_status()
 	skills = r.json()
 
-	tree = _passive_skill_tree(client)
+	tree, masteries = _passive_skill_tree(client)
 
 	stats = Stats(flat_life=38 + character['character']['level'] * 12,
 		increased_life=0,
@@ -45,17 +45,29 @@ def analyze(account, character):
 		node = cluster_jewel_nodes[str(h)]
 		_parse_mods(stats, node['stats'])
 
+	for mastery_effect in skills['mastery_effects']:
+		node_stats = masteries[int(mastery_effect) >> 16]
+		_parse_mods(stats, node_stats)
+
 	print(stats)
 	stats.flat_life += stats.strength // 2
 	print(stats)
 
-def _passive_skill_tree(client) -> dict:
+def _passive_skill_tree(client):
 	r = client.get('https://www.pathofexile.com/passive-skill-tree', headers={'User-Agent': 'Mozilla/5.0'})
 	r.raise_for_status()
 	tree = r.text[r.text.index('passiveSkillTreeData'):]
 	tree = tree[tree.index('{'):]
 	tree = tree[:tree.index('};') + 1]
-	return json.loads(tree)
+	tree_dict = json.loads(tree)
+
+	masteries = {}
+	for node in tree_dict['nodes'].values():
+		if 'masteryEffects' not in node:
+			continue
+		for effect in node['masteryEffects']:
+			masteries[effect['effect']] = effect['stats']
+	return tree_dict, masteries
 
 matchers = [(re.compile(pattern), attr) for pattern, attr in [
 	(r'\+(\d+) to maximum Life', 'flat_life'),
