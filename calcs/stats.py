@@ -10,7 +10,7 @@ class Stats:
 	increased_life: int
 	strength: int
 
-def analyze(account, character):
+def fetch_stats(account, character):
 	client = httpx.Client()
 	client.headers['User-Agent'] = 'Mozilla/5.0'
 	params = {'accountName': account, 'character': character, 'realm': 'pc'}
@@ -49,9 +49,8 @@ def analyze(account, character):
 		node_stats = masteries[int(mastery_effect) >> 16]
 		_parse_mods(stats, node_stats)
 
-	print(stats)
 	stats.flat_life += stats.strength // 2
-	print(stats)
+	return stats
 
 def _passive_skill_tree(client):
 	r = client.get('https://www.pathofexile.com/passive-skill-tree', headers={'User-Agent': 'Mozilla/5.0'})
@@ -88,6 +87,3 @@ def _parse_mods(stats: Stats, mods: list) -> None:
 			if m:
 				value = int(m.group(1))
 				setattr(stats, attr, getattr(stats, attr) + value)
-
-if __name__ == '__main__':
-	analyze('raylu', 'rayluloop')
