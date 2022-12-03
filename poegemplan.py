@@ -51,7 +51,10 @@ def pob(request, short):
 					data_name = name
 					if gem.get('skillId').startswith('Support'):
 						data_name += ' Support'
-					gem_quests = gems[data_name]['quests']
+					if data_name.startswith('Awakened '):
+						gem_quests = gems[data_name[len('Awakened '):]]['quests']
+					else:
+						gem_quests = gems[data_name]['quests']
 					src = gems[data_name]['src']
 			except KeyError:
 				continue
