@@ -25,6 +25,7 @@
 		const pobRes = await fetch('/pob/raw/' + short);
 		const build = await pobRes.json();
 		const quests = await questsPromise;
+		quests.push('unpurchasable');
 
 		const main = document.querySelector('main');
 		main.innerHTML = '';
@@ -39,23 +40,34 @@
 		}
 
 		for (const gem of build['gems']) {
+			let purchasable = false;
 			for (const quest of gem['quests']) {
 				if (quest['classes'] === 'All' || quest['classes'].indexOf(build['class']) !== -1) {
-					const gemDiv = document.createElement('div');
-					gemDiv.classList.add('gem');
-					if (!gem['enabled'])
-						gemDiv.classList.add('disabled');
-					const img = document.createElement('img');
-					img.src = 'https://web.poecdn.com/gen/image/' + gem['src'];
-					const name = document.createElement('div');
-					name.innerText = gem['name'];
-					gemDiv.appendChild(img);
-					gemDiv.appendChild(name);
+					const gemDiv = renderGem(gem);
 					main.querySelector('#' + quest['name']).appendChild(gemDiv);
+					purchasable = true;
 					break;
 				}
 			}
+			if (!purchasable) {
+				const gemDiv = renderGem(gem);
+				main.querySelector('#unpurchasable').appendChild(gemDiv);
+			}
 		}
+	}
+
+	function renderGem(gem) {
+		const gemDiv = document.createElement('div');
+		gemDiv.classList.add('gem');
+		if (!gem['enabled'])
+			gemDiv.classList.add('disabled');
+		const img = document.createElement('img');
+		img.src = 'https://web.poecdn.com/gen/image/' + gem['src'];
+		const name = document.createElement('div');
+		name.innerText = gem['name'];
+		gemDiv.appendChild(img);
+		gemDiv.appendChild(name);
+		return gemDiv;
 	}
 
 	function formatQuest(quest) {
