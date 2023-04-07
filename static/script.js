@@ -16,17 +16,26 @@
 		load(short);
 	}
 
+	const duplicatesCheckbox = document.querySelector('#duplicates');
+	duplicatesCheckbox.addEventListener('change', render);
+
 	async function fetchQuests() {
 		const res = await fetch('/quests');
 		return res.json();
 	}
 
+	let build = null;
+	let quests = null;
+
 	async function load(short) {
 		const pobRes = await fetch('/pob/raw/' + short);
-		const build = await pobRes.json();
-		const quests = await questsPromise;
+		build = await pobRes.json();
+		quests = await questsPromise;
 		quests.push('unpurchasable');
+		render();
+	}
 
+	function render() {
 		const main = document.querySelector('main');
 		main.innerHTML = '';
 		for (const quest of quests) {
@@ -39,7 +48,15 @@
 			main.appendChild(section);
 		}
 
+		const duplicates = duplicatesCheckbox.checked;
+		const seen = new Set();
 		for (const gem of build['gems']) {
+			if (!duplicates) {
+				if (seen.has(gem['name']))
+					continue;
+				seen.add(gem['name']);
+			}
+
 			let purchasable = false;
 			for (const quest of gem['quests']) {
 				if (quest['classes'] === 'All' || quest['classes'].indexOf(build['class']) !== -1) {
