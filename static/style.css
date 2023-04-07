@@ -27,6 +27,13 @@ input {
 	border: 1px solid #222;
 }
 
+.options {
+	width: 90%;
+	max-width: 1200px;
+	margin: 0.5em auto;
+	text-align: right;
+}
+
 main {
 	width: 90%;
 	max-width: 1200px;
