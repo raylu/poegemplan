@@ -62,7 +62,10 @@
 		if (!gem['enabled'])
 			gemDiv.classList.add('disabled');
 		const img = document.createElement('img');
-		img.src = 'https://web.poecdn.com/gen/image/' + gem['src'];
+		if (gem['src'].substring(0, 8) == 'https://')
+			img.src = gem['src'];
+		else
+			img.src = 'https://web.poecdn.com/gen/image/' + gem['src'];
 		const name = document.createElement('div');
 		name.innerText = gem['name'];
 		gemDiv.appendChild(img);
